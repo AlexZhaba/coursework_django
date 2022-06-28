@@ -7,20 +7,26 @@ interface ChildProps {
   children: React.ReactNode;
 }
 
+interface ItemProps extends ChildProps {
+  onClick?: Function;
+  key: number;
+  data: any;
+}
+
 interface Props extends ChildProps {
   gap: number;
 }
 
-const Item: React.FC<ChildProps> = ({ children }) => {
+const Item: React.FC<ItemProps> = ({ children, onClick, data }) => {
   const gap = useContext(GapContext);
   return (
-    <ListItem gap={gap}>
+    <ListItem gap={gap} onClick={() => onClick ? onClick(data): null}>
       {children}
     </ListItem>
   )
 }
 
-const List: React.FC<Props> & { Item: React.FC<ChildProps> } = ({ children, gap }) => {
+const List: React.FC<Props> & { Item: React.FC<ItemProps> } = ({ children, gap }) => {
   return (
     <GapContext.Provider value={gap}>
       <Wrapper>

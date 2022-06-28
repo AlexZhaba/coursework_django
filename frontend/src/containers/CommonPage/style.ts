@@ -21,13 +21,19 @@ export const Header = styled.header`
   font-weight: bold;
   text-transform: uppercase;
   color: #FFF;
+
+  & a {
+    color: inherit;
+    text-decoration: none;
+  }
 `;
 
 export const Main = styled.main`
-  width: 100%;
+  width: calc(100% - 200px);
   display: flex;
   flex-direction: column;
-  align-items: center;
+  /* align-items: center; */
+  padding: 0 100px;
 
   & h1 {
     font-size: 30px;

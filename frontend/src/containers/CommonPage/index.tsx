@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom";
 import { Wrapper, Header, Footer, Main } from "./style";
 
 interface Props {
@@ -8,7 +9,7 @@ interface Props {
 const CommonPage: React.FC<Props> = ({ children }) => (
   <Wrapper>
     <Header>
-      The forms
+      <Link to="/main">The forms</Link>
     </Header>
     <Main>
       {children}

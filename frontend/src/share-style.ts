@@ -10,5 +10,10 @@ export const DefaultContainer = styled.button`
 
   &:hover {
     background: #EEE;
+    cursor: pointer;
+  }
+
+  &:active {
+    background: #DDD;
   }
 `;
