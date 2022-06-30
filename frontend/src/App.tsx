@@ -4,6 +4,7 @@ import MainPage from './pages/MainPage';
 import UsersPage from './pages/UsersPage';
 import ProfilePage from './pages/ProfilePage';
 import ProtectedRoute from './pages/ProtectedRoute';
+import FormTemplatePage from './pages/FormTemplatePage';
 import { User, StorageUser } from './types';
 import LocalStorage from './services/LocalStorage';
 
@@ -35,6 +36,10 @@ const App: React.FC = () => {
         <Route path="/main" element={<ProtectedRoute onUnAuthPath="/users" />}>
           <Route path="/main" element={<MainPage activeUser={activeUser as User} />} />
         </Route>
+
+        {/* <Route path="/formTemplate/:templateId" element={<ProtectedRoute onUnAuthPath="/users" />}> */}
+          <Route path="/formTemplate/:templateId" element={<FormTemplatePage activeUser={activeUser as User} />} />
+        {/* </Route> */}
         {!activeUser && <Route path={"/users"} element={<UsersPage setActiveUser={setActiveUser} />} />}
         <Route path="*" element={<Navigate to="/main"/>} />
       </Routes>

@@ -17,3 +17,24 @@ export const DefaultContainer = styled.button`
     background: #DDD;
   }
 `;
+
+export const Button = styled.button`
+  background: #8987F8;
+  color: #FFF;
+  width: 150px;
+  height: 40px;
+  outline: none;
+  border: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: .3s all;
+  margin: 20px 0;
+  border-radius: 5px;
+
+  &:hover {
+    background: #8080F8;
+    transition: .3s all;
+    cursor: pointer;
+  }
+`;

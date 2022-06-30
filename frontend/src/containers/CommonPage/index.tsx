@@ -1,23 +1,32 @@
 import React from "react";
-import { Link } from "react-router-dom";
-import { Wrapper, Header, Footer, Main } from "./style";
+import { Link, useLocation } from "react-router-dom";
+import { Wrapper, Header, Footer, Main, RightHeader } from "./style";
 
 interface Props {
   children: React.ReactNode
 }
 
-const CommonPage: React.FC<Props> = ({ children }) => (
-  <Wrapper>
-    <Header>
-      <Link to="/main">The forms</Link>
-    </Header>
-    <Main>
-      {children}
-    </Main>
-    <Footer>
-      Жаворонков Александр Арсеньевич, 211-321, 2022
-    </Footer>
-  </Wrapper>
-);
-
+const CommonPage: React.FC<Props> = ({ children }) => {
+  const location = useLocation();
+  console.log(location);
+  return (
+    <Wrapper>
+      <Header>
+        <Link to="/main">The forms</Link>
+        
+        <RightHeader>
+          <Link to="/profile">
+            Мой профиль
+          </Link>
+        </RightHeader>
+      </Header>
+      <Main>
+        {children}
+      </Main>
+      <Footer>
+        Жаворонков Александр Арсеньевич, 211-321, 2022
+      </Footer>
+    </Wrapper>
+  );
+}
 export default CommonPage;

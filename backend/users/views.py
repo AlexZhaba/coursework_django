@@ -38,5 +38,13 @@ def index(request):
       delete_user.delete()
       return JsonResponse("ok")
   else:
-    users = list(User.objects.values())
-    return JsonResponse(users, safe=False)
+    # print(request.GET["subdivision_id"])
+    try:
+      print('sub',Subdivision.objects.get(pk=request.GET["subdivision_id"]))
+      users = list(User.objects.filter(subdivision=Subdivision.objects.get(pk=request.GET["subdivision_id"])).values())
+    except:
+      users = list(User.objects.values())
+      return JsonResponse(users, safe=False)
+    else:
+      return JsonResponse(users, safe=False)
+      

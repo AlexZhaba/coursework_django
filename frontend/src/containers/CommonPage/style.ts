@@ -21,6 +21,7 @@ export const Header = styled.header`
   font-weight: bold;
   text-transform: uppercase;
   color: #FFF;
+  position: relative;
 
   & a {
     color: inherit;
@@ -50,4 +51,11 @@ export const Footer = styled.footer`
   display: flex;
   align-items: center;
   justify-content: center;
+`;
+
+export const RightHeader = styled.div`
+  position: absolute;
+  right: 100px;
+  font-size: 15px;
+  text-transform: none;
 `;
