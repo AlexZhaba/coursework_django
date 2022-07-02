@@ -15,10 +15,33 @@ interface Form {
   questions: Question[];
 }
 
+interface Answer {
+  id: number;
+  text: string
+}
+
+interface QuestionWithAsnwers extends Question {
+  answer: Answer
+}
+
+interface FormWithAnswers {
+  id: number;
+  user: User;
+  about_user: User;
+  name: string;
+  questions: QuestionWithAsnwers[];
+}
+
 type StorageUser = User | null;
+
+interface UserForms {
+  [K: string]: FormWithAnswers[]
+}
 
 export type {
   User,
   Form,
   StorageUser,
+  UserForms,
+  FormWithAnswers,
 };

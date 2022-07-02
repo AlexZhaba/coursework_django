@@ -18,11 +18,10 @@ class FormTemplate(models.Model):
 
 class FormWithAnswer(models.Model):
   form_template = models.ForeignKey("FormTemplate", on_delete=models.CASCADE)
-  about_user = models.ForeignKey("users.User", on_delete=models.CASCADE)
+  about_user = models.ForeignKey("users.User", on_delete=models.CASCADE, related_name='about_user_set')
+  user = models.ForeignKey("users.User", on_delete=models.CASCADE, related_name='user_set', default=None)
 
-
-class Answers(models.Model):
-  user = models.ForeignKey("users.User", on_delete=models.CASCADE)
+class Answer(models.Model):
   question = models.ForeignKey("Question", on_delete=models.CASCADE)
   form = models.ForeignKey("FormWithAnswer", on_delete=models.CASCADE)
   text = models.CharField(max_length=1000)

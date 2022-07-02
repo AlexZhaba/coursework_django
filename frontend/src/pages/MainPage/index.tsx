@@ -12,8 +12,8 @@ interface Props {
 }
 
 const MainPage: React.FC<Props> = ({ activeUser }) => {
-  const { isLoading, data } = useAPI<Form[]>("get", "forms/template");
-  const usersInDivision = useAPI<User[]>("get", `users?subdivision_id=${activeUser.subdivision_id}`)
+  const { isLoading, data } = useAPI<Form[]>("get", "forms/template", []);
+  const usersInDivision = useAPI<User[]>("get", `users?subdivision_id=${activeUser.subdivision_id}`, [])
   const [selectedTemplate, setSelectedTemplate] = useState<null | Form>(null);
   const [isOpen, setIsOpen] = useState(false);
 

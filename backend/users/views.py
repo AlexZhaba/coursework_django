@@ -1,5 +1,5 @@
 from django.http import HttpResponse
-from django.shortcuts import render
+from django.shortcuts import get_object_or_404, render
 import json
 from django.http import HttpResponse, JsonResponse
 from django.views.decorators.csrf import csrf_exempt
@@ -39,12 +39,17 @@ def index(request):
       return JsonResponse("ok")
   else:
     # print(request.GET["subdivision_id"])
-    try:
-      print('sub',Subdivision.objects.get(pk=request.GET["subdivision_id"]))
-      users = list(User.objects.filter(subdivision=Subdivision.objects.get(pk=request.GET["subdivision_id"])).values())
-    except:
-      users = list(User.objects.values())
-      return JsonResponse(users, safe=False)
+    if "id" in request.GET:
+      print(request.GET["id"])
+      user = get_object_or_404(User, pk=request.GET["id"])
+      return JsonResponse(model_to_dict(user), safe=False)
     else:
-      return JsonResponse(users, safe=False)
-      
+      try:
+        print('sub',Subdivision.objects.get(pk=request.GET["subdivision_id"]))
+        users = list(User.objects.filter(subdivision=Subdivision.objects.get(pk=request.GET["subdivision_id"])).values())
+      except:
+        users = list(User.objects.values())
+        return JsonResponse(users, safe=False)
+      else:
+        return JsonResponse(users, safe=False)
+        

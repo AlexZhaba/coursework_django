@@ -1,26 +1,34 @@
 import { useEffect, useState } from "react";
 import APIManager from "../services/APIManager";
 
-const useAPI = <ResponseAPI>(
-  method: "get",
+const useAPI = <ResponseAPI, Deps extends unknown[] = []>(
+  method: "get" | "post",
   endpoint: string,
-  deps: unknown[] = [],
+  deps: Deps,
+  body: object = {},
+  // deps: [string] extends [...args: any[], last: any] ? Deps : [] = ['123'],
+  depsCondition?: (args: Deps | []) => boolean,
 ) => {
   const [isLoading, setIsLoading] = useState(false);
+  const [requestBody, setRequestBody] = useState(body);
   const [error, setError] = useState<string | null>(null);
   const [data, setData] = useState<ResponseAPI | null>(null);
-
+  
   useEffect(() => {
+    if (depsCondition && !depsCondition(deps)) return;
+
     setIsLoading(true);
-    APIManager[method](endpoint)
+    APIManager[method](endpoint, requestBody)
       .then(data => setData(data))
       .catch(error => setError(error))
       .finally(() => setIsLoading(false));
-  }, [...deps, endpoint]);
+
+  }, [...deps, endpoint, requestBody]);
 
   return {
     isLoading,
     data,
+    setRequestBody,
     error,
   };
 };

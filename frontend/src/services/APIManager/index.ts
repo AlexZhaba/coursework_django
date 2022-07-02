@@ -12,6 +12,15 @@ class APIManager {
     const result = await response.json();
     return result;
   }
+
+  async post(endpoint: string, body: unknown) {
+    const response = await fetch(`${this.#baseUrl}${endpoint}`, {
+      method: "POST",
+      body: JSON.stringify(body),
+    });
+    const result = await response.json();
+    return result;
+  }
 }
 
 export default new APIManager(APIURL);
