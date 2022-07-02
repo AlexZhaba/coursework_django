@@ -30,12 +30,12 @@ export const Header = styled.header`
 `;
 
 export const Main = styled.main`
-  width: calc(100% - 200px);
+  width: calc(100% - 300px);
   display: flex;
   flex-direction: column;
   /* align-items: center; */
   padding: 0 100px;
-
+  padding-bottom: 100px;
   & h1 {
     font-size: 30px;
     /* font-weight: normal; */
@@ -58,4 +58,6 @@ export const RightHeader = styled.div`
   right: 100px;
   font-size: 15px;
   text-transform: none;
+  display: flex;
+  gap: 15px;
 `;

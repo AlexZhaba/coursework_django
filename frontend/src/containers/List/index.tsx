@@ -9,7 +9,7 @@ interface ChildProps {
 
 interface ItemProps extends ChildProps {
   onClick?: Function;
-  key: number;
+  key: number | string;
   data: any;
 }
 

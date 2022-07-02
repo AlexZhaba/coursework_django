@@ -12,7 +12,7 @@ interface Props {
 }
 
 const UsersPage: React.FC<Props> = ({ setActiveUser }) => {
-  const { isLoading, data } = useAPI<User[]>("get", "users");
+  const { isLoading, data } = useAPI<User[]>("get", "users", []);
   const navigate = useNavigate();
 
   const handleSelectUser = useCallback((user: User) => {
