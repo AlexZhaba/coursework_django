@@ -1,12 +1,14 @@
 import styled from "styled-components";
 
 export const DefaultContainer = styled.button`
-  height: 60px;
+  /* height: 60px; */
   width: 400px;
+  max-width: 100%;
   border: 2px solid #8987F8;
   border-radius: 10px;
   background: #FFF;
   font-size: 24px;
+  padding: 10px 0;
 
   &:hover {
     background: #EEE;
@@ -15,6 +17,16 @@ export const DefaultContainer = styled.button`
 
   &:active {
     background: #DDD;
+  }
+
+  @media (max-width: 1100px) {
+    font-size: 20px;
+    padding: 6px 0;
+  }
+
+  @media (max-width: 700px) {
+    font-size: 16px;
+    padding: 3px 0;
   }
 `;
 
@@ -45,4 +57,5 @@ export const TextArea = styled.textarea`
   width: 500px;
   font-family: 'Raleway', sans-serif;
   outline: none;
+  max-width: 100%;
 `;

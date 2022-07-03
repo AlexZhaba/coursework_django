@@ -15,8 +15,14 @@ class FormTemplateAdmin(admin.ModelAdmin):
   inlines = [QuestionsInline]
   search_fields = ['name']
 
+class AnswersInline(admin.TabularInline):
+    model = Answer
+
+class FormWithAnswerAdmin(admin.ModelAdmin):
+  inlines = [AnswersInline]
+  list_filter = ('user',)
 
 admin.site.register(Question)
-admin.site.register(FormWithAnswer)
+admin.site.register(FormWithAnswer, FormWithAnswerAdmin)
 admin.site.register(Answer)
 admin.site.register(FormTemplate, FormTemplateAdmin)

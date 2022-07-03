@@ -13,18 +13,19 @@ const CommonPage: React.FC<Props> = ({ children }) => {
     <Wrapper>
       <Header>
         <Link to="/main">The forms</Link>
-        
-        <RightHeader>
-        <Link to="/main">
-            Анкеты
-          </Link>
-          <Link to="/userssubdivision">
-            Список подразделения
-          </Link>
-          <Link to="/profile">
-            Мой профиль
-          </Link>
-        </RightHeader>
+        {location.pathname !== "/users" && (
+          <RightHeader>
+            <Link to="/main">
+              Анкеты
+            </Link>
+            <Link to="/userssubdivision">
+              Список подразделения
+            </Link>
+            <Link to="/profile">
+              Мой профиль
+            </Link>
+          </RightHeader>
+        )}
       </Header>
       <Main>
         {children}

@@ -8,6 +8,7 @@ export const TopProfile = styled.div`
 
 export const ExitSpan = styled.span`
   color: red;
+  cursor: pointer;
 `;
 
 export const UserName = styled.p`
@@ -17,4 +18,12 @@ export const UserName = styled.p`
 
 export const Title = styled.span`
   font-size: 23px;
+
+  @media (max-width: 1100px) {
+    font-size: 20px;
+  }
+
+  @media (max-width: 700px) {
+    font-size: 17px;
+  }
 `;

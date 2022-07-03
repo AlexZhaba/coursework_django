@@ -15,7 +15,7 @@ const UsersSubdivision: React.FC<Props> = ({ activeUser }) => {
 
   return (
     <CommonPage>
-      <h1>Список пользователя вашего предприятия</h1>
+      <h1>Список вашего предприятия</h1>
       <List gap={20}>
         {isLoading && <p>Загрузка пользователей...</p>}
         {data && data.map(user => (
