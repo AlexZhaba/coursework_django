@@ -35,6 +35,7 @@ export const Wrapper = styled.div<WrapperProps>`
 
 export const Body = styled.div`
   width: 300px;
+  max-width: calc(100vw - 20px);
   height: 300px;
   background: #FFF;
   cursor: default;
@@ -44,4 +45,10 @@ export const Body = styled.div`
   display: flex;
   align-items: center;
   flex-direction: column;
+
+
+  @media(max-width: 700px) {
+    /* height: 100vh; */
+    /* border-radius: 0px; */
+  }
 `;

@@ -37,8 +37,8 @@ const MainPage: React.FC<Props> = ({ activeUser }) => {
         ))}
       </List>
       <Modal isOpen={isOpen} onClose={() => setIsOpen(false)}>
-        <h2>Выбрать пользователя</h2>
-        <List gap={10}>
+        <h2 style={{textAlign: "center"}}>Выбрать пользователя</h2>
+        <List gap={10} overflowtype="scroll">
           {usersInDivision.data && usersInDivision.data.map(user => (
             <List.Item key={user.id} data={user}>
               <Link to={`/formTemplate/${selectedTemplate?.id}?about=${user.id}`}>

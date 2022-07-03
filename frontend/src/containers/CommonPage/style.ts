@@ -12,12 +12,13 @@ export const Wrapper = styled.div`
 
 export const Header = styled.header`
   width: 100%;
-  height: 60px;
+  /* height: 60px; */
+  padding: 10px 0;
   background: #8987F8;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 30px;
+  font-size: 26px;
   font-weight: bold;
   text-transform: uppercase;
   color: #FFF;
@@ -27,10 +28,14 @@ export const Header = styled.header`
     color: inherit;
     text-decoration: none;
   }
+
+  @media (max-width: 1100px) {
+    flex-direction: column;
+  }
 `;
 
 export const Main = styled.main`
-  width: calc(100% - 300px);
+  width: calc(100vw);
   display: flex;
   flex-direction: column;
   /* align-items: center; */
@@ -39,6 +44,24 @@ export const Main = styled.main`
   & h1 {
     font-size: 30px;
     /* font-weight: normal; */
+
+    @media (max-width: 1100px) {
+      font-size: 24px;
+    }
+
+    @media (max-width: 700px) {
+      font-size: 18px;
+    }
+  }
+
+  @media (max-width: 1100px) {
+    padding: 0 60px;
+    /* width: calc(100vw - 120px); */
+  }
+
+  @media (max-width: 700px) {
+    padding: 0 30px;
+    /* width: calc(100vw - 60px); */
   }
 `;
 
@@ -51,6 +74,11 @@ export const Footer = styled.footer`
   display: flex;
   align-items: center;
   justify-content: center;
+  text-align: center;
+
+  @media (max-width: 700px) {
+    font-size: 13px;
+  }
 `;
 
 export const RightHeader = styled.div`
@@ -60,4 +88,19 @@ export const RightHeader = styled.div`
   text-transform: none;
   display: flex;
   gap: 15px;
+
+  & > a {
+    text-align: center;
+  }
+
+  @media (max-width: 1100px) {
+    position: relative;
+    right: 0;
+  }
+
+  @media (max-width: 700px) {
+    position: relative;
+    right: 0;
+    flex-direction: column;
+  }
 `;

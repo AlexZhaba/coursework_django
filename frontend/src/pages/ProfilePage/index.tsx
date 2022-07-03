@@ -39,7 +39,7 @@ const ProfilePage: React.FC<Props> = ({ activeUser, setActiveUser }) => {
   return (
     <CommonPage>
       <TopProfile>
-        <h1>Активный профиль: {activeUser.name}</h1>
+        <h1>Профиль: {activeUser.name}</h1>
         {setActiveUser && <ExitSpan onClick={onExit}>Выйти</ExitSpan>}
       </TopProfile>
       <Title>Список пройденных анкетирований по пользователям</Title>

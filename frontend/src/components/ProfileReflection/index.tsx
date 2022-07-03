@@ -13,7 +13,7 @@ const ProfileReflection: React.FC<Props> = ({ profileData }) => {
   if (!profileData) return <div></div>;
 
   return (
-    <List gap={20}>
+    <List gap={0}>
       {profileData && Object.keys(profileData).map(name => (
         <List.Item key={name} data={name}>
           <UserName>{name}</UserName>

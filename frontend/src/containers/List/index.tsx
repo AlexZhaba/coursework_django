@@ -15,6 +15,7 @@ interface ItemProps extends ChildProps {
 
 interface Props extends ChildProps {
   gap: number;
+  overflowtype?: "scroll" | "hidden"
 }
 
 const Item: React.FC<ItemProps> = ({ children, onClick, data }) => {
@@ -26,10 +27,10 @@ const Item: React.FC<ItemProps> = ({ children, onClick, data }) => {
   )
 }
 
-const List: React.FC<Props> & { Item: React.FC<ItemProps> } = ({ children, gap }) => {
+const List: React.FC<Props> & { Item: React.FC<ItemProps> } = ({ children, gap, overflowtype }) => {
   return (
     <GapContext.Provider value={gap}>
-      <Wrapper>
+      <Wrapper overflowtype={overflowtype}>
         {children}
       </Wrapper>
     </GapContext.Provider>

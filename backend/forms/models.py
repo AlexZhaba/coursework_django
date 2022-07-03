@@ -21,7 +21,13 @@ class FormWithAnswer(models.Model):
   about_user = models.ForeignKey("users.User", on_delete=models.CASCADE, related_name='about_user_set')
   user = models.ForeignKey("users.User", on_delete=models.CASCADE, related_name='user_set', default=None)
 
+  def __str__(self):
+    return self.user.name + "-" + self.form_template.name
+
 class Answer(models.Model):
   question = models.ForeignKey("Question", on_delete=models.CASCADE)
   form = models.ForeignKey("FormWithAnswer", on_delete=models.CASCADE)
   text = models.CharField(max_length=1000)
+
+  def __str__(self):
+    return self.text
