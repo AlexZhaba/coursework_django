@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Route, Routes, Navigate } from 'react-router-dom';
+import { Provider } from 'react-redux'
+
 import MainPage from './pages/MainPage';
 import UsersPage from './pages/UsersPage';
 import ProfilePage from './pages/ProfilePage';
@@ -10,6 +12,8 @@ import { User, StorageUser } from './types';
 import LocalStorage from './services/LocalStorage';
 import ProfileUserIdPage from './pages/ProfileUserIdPage';
 import UsersSubdivision from './pages/UsersSubvision';
+import { LoginPage } from './pages/LoginPage';
+import { store } from './redux/store/store';
 
 export const AppContext = React.createContext<{
   user: StorageUser,
@@ -29,35 +33,37 @@ const App: React.FC = () => {
   console.log('activeUser123', activeUser);
 
   return (
-    <AppContext.Provider value={{
-      user: activeUser
-    }}>
-      <Routes>
-        <Route path="/profile" element={<ProtectedRoute onUnAuthPath="/users" />}>
-          <Route path="/profile" element={<ProfilePage activeUser={activeUser as User} setActiveUser={setActiveUser} />} />
-        </Route>
+    <Provider store={store}>
+      <AppContext.Provider value={{
+        user: activeUser
+      }}>
+        <Routes>
+          <Route element={<LoginPage setActiveUser={setActiveUser} />} path='/sign' />
+          <Route path="/profile" element={<ProtectedRoute onUnAuthPath="/users" />}>
+            <Route path="/profile" element={<ProfilePage activeUser={activeUser as User} setActiveUser={setActiveUser} />} />
+          </Route>
 
-        <Route path="/profile/:profileId" element={<ProfileUserIdPage />} />
-        
-        <Route path="/main" element={<ProtectedRoute onUnAuthPath="/users" />}>
-          <Route path="/main" element={<MainPage activeUser={activeUser as User} />} />
-        </Route>
+          <Route path="/profile/:profileId" element={<ProfileUserIdPage />} />
+          
+          <Route path="/main" element={<ProtectedRoute onUnAuthPath="/users" />}>
+            <Route path="/main" element={<MainPage activeUser={activeUser as User} />} />
+          </Route>
 
-        <Route path="/userssubdivision" element={<ProtectedRoute onUnAuthPath="/users" />}>
-          <Route path="/userssubdivision" element={<UsersSubdivision activeUser={activeUser as User} />} />
-        </Route>
+          <Route path="/userssubdivision" element={<ProtectedRoute onUnAuthPath="/users" />}>
+            <Route path="/userssubdivision" element={<UsersSubdivision activeUser={activeUser as User} />} />
+          </Route>
+          <Route path="/formTemplate/:templateId" element={<ProtectedRoute onUnAuthPath="/users" />}>
+            <Route path="/formTemplate/:templateId" element={<FormTemplatePage activeUser={activeUser as User} />} />
+          </Route>
 
-        <Route path="/formTemplate/:templateId" element={<ProtectedRoute onUnAuthPath="/users" />}>
-          <Route path="/formTemplate/:templateId" element={<FormTemplatePage activeUser={activeUser as User} />} />
-        </Route>
-
-        <Route path="/form/:formId" element={<ProtectedRoute onUnAuthPath="/users" />}>
-          <Route path="/form/:formId" element={<FormPage activeUser={activeUser as User} />} />
-        </Route>
-        {!activeUser && <Route path={"/users"} element={<UsersPage setActiveUser={setActiveUser} />} />}
-        <Route path="*" element={<Navigate to="/main"/>} />
-      </Routes>
-    </AppContext.Provider>
+          <Route path="/form/:formId" element={<ProtectedRoute onUnAuthPath="/users" />}>
+            <Route path="/form/:formId" element={<FormPage activeUser={activeUser as User} />} />
+          </Route>
+          {!activeUser && <Route path={"/users"} element={<UsersPage setActiveUser={setActiveUser} />} />}
+          <Route path="*" element={<Navigate to="/main"/>} />
+        </Routes>
+      </AppContext.Provider>
+    </Provider>
   );
 };
 

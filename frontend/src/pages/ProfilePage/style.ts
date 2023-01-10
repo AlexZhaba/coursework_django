@@ -27,3 +27,8 @@ export const Title = styled.span`
     font-size: 17px;
   }
 `;
+
+export const Description = styled.span`
+  color: grey;
+  font-size: 14px;
+`;

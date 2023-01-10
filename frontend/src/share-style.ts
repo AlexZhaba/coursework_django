@@ -30,7 +30,21 @@ export const DefaultContainer = styled.button`
   }
 `;
 
-export const Button = styled.button`
+export const Card = styled.div`
+  max-width: 100%;
+  width: 100%;
+  padding: 15px 30px;
+  border-radius: 4px;
+  font-size: 25px;
+
+  box-shadow: 0px 0px 30px #ccc;
+`;
+
+interface ButtonProps {
+  isLoading?: boolean;
+}
+
+export const Button = styled.button<ButtonProps>`
   background: #8987F8;
   color: #FFF;
   width: 150px;
@@ -42,13 +56,38 @@ export const Button = styled.button`
   justify-content: center;
   transition: .3s all;
   margin: 20px 0;
+  font-size: 16px;
   border-radius: 5px;
+  cursor: pointer;
+
+  position: relative;
 
   &:hover {
-    background: #8080F8;
-    transition: .3s all;
-    cursor: pointer;
+    background: #7777f9;
   }
+
+  &:focus {
+    background: #5a5aed;
+    transform: scale(0.97);
+  }
+
+  ${props => props.isLoading && `
+    &::before {
+      z-index: 1;
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: rgba(0, 0, 0, .4);
+      cursor: not-allowed;
+      font-size: 40px;
+      border-radius: 5px;
+      
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      line-height: 5px;
+    }
+  `}
 `;
 
 export const TextArea = styled.textarea`

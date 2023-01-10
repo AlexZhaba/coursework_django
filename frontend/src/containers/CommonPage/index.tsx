@@ -13,7 +13,7 @@ const CommonPage: React.FC<Props> = ({ children }) => {
     <Wrapper>
       <Header>
         <Link to="/main">The forms</Link>
-        {location.pathname !== "/users" && (
+        {location.pathname !== "/users" && location.pathname !== '/sign' && (
           <RightHeader>
             <Link to="/main">
               Анкеты

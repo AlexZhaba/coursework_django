@@ -21,6 +21,8 @@ const UsersPage: React.FC<Props> = ({ setActiveUser }) => {
     navigate("/profile");
   }, []);
 
+  console.log('data', data);
+
   return (
     <CommonPage>
       <h1>Выбор пользователя</h1>

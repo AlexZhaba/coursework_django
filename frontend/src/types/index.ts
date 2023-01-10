@@ -12,6 +12,8 @@ interface Question {
 interface Form {
   id: number;
   name: string;
+  description: string;
+  image: string;
   questions: Question[];
 }
 
