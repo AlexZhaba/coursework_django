@@ -27,6 +27,20 @@ export const CardContainer = styled.div`
   grid-template-rows: repeat(2, 1fr);
   gap: 20px;
   cursor: pointer;
+  max-width: 1400px;
+
+  
+  @media(min-width: 1800px) {
+    margin: 0 auto;
+  }
+
+  @media(max-width: 1000px) {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  @media(max-width: 500px) {
+    grid-template-columns: repeat(1, 1fr);
+  }
 `;
 
 export const PaginateContainer = styled.div`
@@ -65,6 +79,7 @@ export const Pagblock = styled.div<PagblockProps>`
 
 interface ButtonProps {
   isLoading?: boolean;
+  selected?: boolean;
 }
 
 export const UpdateButton = styled.button<ButtonProps>`
@@ -113,6 +128,20 @@ export const UpdateButton = styled.button<ButtonProps>`
   `}
 `;
 
+export const SortButton = styled(UpdateButton)`
+  ${props => !props.selected && `
+    background: #FFF;
+    color: var(--primary-color);
+
+    &:hover {
+      background: #FFF;
+    }
+    &:active {
+      background: #FFF;
+    }
+  `}
+`;
+
 export const Header = styled.div`
   display: flex;
   align-items: center;
@@ -123,4 +152,49 @@ export const Header = styled.div`
 export const Image = styled.img`
   width: 100%;
   height: 100%;
+`;
+
+export const SearchBar = styled.div`
+  margin: 20px 0;
+  display: flex;
+  align-items: center;
+
+  gap: 20px;
+
+  & > :first-child {
+    flex: 2;
+  }
+
+  & > :last-child {
+    flex: 1;
+  }
+
+  @media(max-width: 1000px) {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+`;
+
+export const SearchTitle = styled.div`
+  display: flex;
+  font-size: 20px;
+  font-weight: bold;
+  align-items: center;
+  gap: 10px;
+`;
+
+export const SortContainer = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+
+  gap: 15px;
+
+  font-size: 20px;
+  font-weight: 500;
+`;
+
+export const Sort = styled.div`
+  display: flex;
+  gap: 5px;
 `;

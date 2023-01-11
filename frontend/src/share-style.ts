@@ -98,3 +98,21 @@ export const TextArea = styled.textarea`
   outline: none;
   max-width: 100%;
 `;
+
+export const Input = styled.input`
+  width: 100%;
+  padding: 10px 10px;
+  border-radius: 6px;
+
+  outline: none;
+  border: none;
+
+  box-shadow: 0px 0px 0px 1px var(--primary-color);
+  transition: .2s box-shadow;
+
+  font-size: 20px;
+
+  &:focus {
+    box-shadow: 0px 0px 0px 2px var(--primary-color);
+  }
+`;

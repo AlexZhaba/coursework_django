@@ -1,18 +1,31 @@
 import React, { useCallback, useEffect, useState } from "react";
-import { useLocation } from 'react-router';
 
 import useAPI from "../../hooks/useApi";
 import CommonPage from "../../containers/CommonPage";
 import List from "../../containers/List";
 import Modal from "../../components/Modal";
-import { CardContainer, Header, ImageContainer, Pagblock, PaginateContainer, Image, UpdateButton, UserButton } from "./style";
-import { Button, Card, DefaultContainer } from "../../share-style";
+import {
+  CardContainer, 
+  Header, 
+  ImageContainer, 
+  Pagblock, 
+  PaginateContainer, 
+  Image, 
+  UpdateButton, 
+  UserButton,
+  SearchBar,
+  SearchTitle,
+  SortContainer,
+  Sort,
+  SortButton,
+} from "./style";
+import { Button, Card, DefaultContainer, Input } from "../../share-style";
 import { User, Form } from "../../types";
 import { Link } from "react-router-dom";
 import { Description } from "../ProfilePage/style";
 import { useSelector } from "react-redux";
 import { RootState, useAppDispatch } from "../../redux/store/store";
-import { fetchTemplates, setPage, } from "../../redux/slices/formSlice";
+import { fetchTemplates, setPage, setSortType, setSearch } from "../../redux/slices/formSlice";
 interface Props {
   activeUser: User
 }
@@ -24,6 +37,8 @@ const MainPage: React.FC<Props> = ({ activeUser }) => {
     pageTemplates: templates,
     page,
     pageCount,
+    sortType,
+    search,
   } = useSelector((state: RootState) => state.form);
 
   const usersInDivision = useAPI<User[]>("get", `users?subdivision_id=${activeUser.subdivision_id}`, [])
@@ -42,6 +57,8 @@ const MainPage: React.FC<Props> = ({ activeUser }) => {
     setSelectedTemplate(form);
   }, []);
 
+  console.log('sortType', sortType);
+
   return (
     <CommonPage>
       <Header>
@@ -53,15 +70,49 @@ const MainPage: React.FC<Props> = ({ activeUser }) => {
           Обновить
         </UpdateButton>
       </Header>
+      <SearchBar>
+        <SearchTitle>
+          <span>Поиск</span>
+          <Input
+            autoFocus
+            placeholder={'Параметры фильтрации...'}
+            value={search}
+            onInput={({ target }: any) => dispatch(setSearch(target.value))} 
+          />
+        </SearchTitle>
+        <SortContainer>
+          <span>Сортировка</span>
+          <Sort>
+            <SortButton
+              selected={sortType === 'ALP'} onClick={() => dispatch(setSortType('ALP'))}
+            >
+              Алфавит
+            </SortButton>
+            <SortButton
+              selected={sortType === 'POP'} onClick={() => dispatch(setSortType('POP'))}
+            >
+              Популярное
+            </SortButton>
+          </Sort>
+        </SortContainer>
+      </SearchBar>
       <CardContainer>
         {isTemplatesLoading && <p>Загрузка анкетирований...</p>}
-        {templates && !isTemplatesLoading && templates.map(form => (
+        {templates && !isTemplatesLoading && templates
+          .filter(template => template.name.toLowerCase().includes(search.toLowerCase()))
+          .sort((template1, template2) => sortType === 'ALP' ? template2.name[0] > template1.name[0] ? -1 : 1 : template1.id - template2.id)
+          .map(form => (
           <div key={form.id} onClick={() => handleClickForm(form)}>
             <ImageContainer>
-              <Image src={form.image} alt="" />
+              <Image src={form.image} alt={`image_${form.name}`} />
             </ImageContainer>
             <Card>
               <div>{form.name}</div>
+              <div>
+                {Array(form.rating).fill(0).map(_ => (
+                  <svg xmlns="http://www.w3.org/2000/svg" height="24" width="24" fill="#8987F8"><path d="M7.775 19.3 8.9 14.5l-3.725-3.225 4.9-.425L12 6.325l1.925 4.525 4.9.425L15.1 14.5l1.125 4.8L12 16.75Z"/></svg>
+                ))}
+              </div>
               <Description>{form.description}</Description>
             </Card>
           </div>

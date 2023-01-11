@@ -1,5 +1,7 @@
 import React from "react";
 import { Link, useLocation } from "react-router-dom";
+import LocalStorage from "../../services/LocalStorage";
+import { User } from "../../types";
 import { Wrapper, Header, Footer, Main, RightHeader } from "./style";
 
 interface Props {
@@ -12,7 +14,7 @@ const CommonPage: React.FC<Props> = ({ children }) => {
   return (
     <Wrapper>
       <Header>
-        <Link to="/main">The forms</Link>
+        <Link to="/main" tabIndex={-1}>The forms</Link>
         {location.pathname !== "/users" && location.pathname !== '/sign' && (
           <RightHeader>
             <Link to="/main">
@@ -22,7 +24,7 @@ const CommonPage: React.FC<Props> = ({ children }) => {
               Список подразделения
             </Link>
             <Link to="/profile">
-              Мой профиль
+              Мой профиль({LocalStorage.get<User>('activeUser')?.name})
             </Link>
           </RightHeader>
         )}

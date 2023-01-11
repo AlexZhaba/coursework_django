@@ -9,4 +9,5 @@ export interface Template {
   questions: Question[];
   description: string;
   image: string;
+  rating: number;
 }

@@ -2,9 +2,9 @@ import React, { useCallback, useId } from "react";
 import CommonPage from "../../containers/CommonPage";
 import { RootState, useAppDispatch } from "../../redux/store/store";
 import { userLogin } from "../../redux/slices/userSlice";
-import { Button } from "../../share-style";
+import { Button, Input } from "../../share-style";
 
-import { FormWrapper, Input, Label, Title, Wrapper, InputContainer } from './style';
+import { FormWrapper, Label, Title, Wrapper, InputContainer } from './style';
 import { useSelector } from "react-redux";
 import { Navigate, useNavigate } from "react-router";
 
