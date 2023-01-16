@@ -1,3 +1,4 @@
+import { FormWithAnswers } from './../../models/templateWithAnswers';
 import { Template } from './../../models/template';
 import { createSlice, createAsyncThunk, CaseReducer, PayloadAction } from "@reduxjs/toolkit";
 import APIManager from "../../services/APIManager";
@@ -8,8 +9,9 @@ interface InitialState {
   page: number;
   pageTemplates: null | Template[];
   pageCount: number;
-  sortType: 'ALP' | 'POP';
+  sortType: 'ALP' | 'POP' | 'RATE';
   search: string;
+  myForms: FormWithAnswers[];
 }
 
 const MAX_CARD_ON_PAGE = 6;
@@ -24,6 +26,7 @@ export const formSlice = createSlice({
     pageCount: 1,
     sortType: 'POP',
     search: '',
+    myForms: [],
   } as InitialState,
   reducers: {
     setPage(state, action: PayloadAction<number>) {
@@ -42,7 +45,6 @@ export const formSlice = createSlice({
       const newPageTemplates = state.templates?.filter(template => template.name.toLowerCase().includes(action.payload.toLowerCase())) || [];
 
       state.pageTemplates = newPageTemplates.slice(0, MAX_CARD_ON_PAGE);
-      console.log('newPageTemplates', newPageTemplates);
       state.pageCount = Math.round(newPageTemplates.length / MAX_CARD_ON_PAGE + 0.49);
     },
   },
@@ -58,6 +60,11 @@ export const formSlice = createSlice({
       state.pageTemplates = action.payload.slice(MAX_CARD_ON_PAGE * (state.page - 1), MAX_CARD_ON_PAGE * state.page);
       state.pageCount = Math.round(action.payload.length / MAX_CARD_ON_PAGE + 0.49);
     });
+
+    builder.addCase(fetchForms.fulfilled, (state, action: PayloadAction<FormWithAnswers[]>) => {
+      // console.log(action.payload)
+      state.myForms = action.payload;
+    });
   },
 });
 
@@ -65,8 +72,12 @@ export const fetchTemplates = createAsyncThunk('forms/fetchTemplates', async (fo
   if (forceFirst) {
     thunkAPI.dispatch(setPage(1));
   }
-  return await APIManager.get(`forms/template`)
+  return await APIManager.get(`templates?limit=1`, true)
 });
+
+export const fetchForms = createAsyncThunk('forms', async (_, thunkAPI?) => 
+  await APIManager.get(`forms?limit=1`, true)
+);
 
 
 export const { setPage, setSortType, setSearch } = formSlice.actions;

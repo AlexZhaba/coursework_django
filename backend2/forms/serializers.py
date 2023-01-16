@@ -9,23 +9,29 @@ class QuestionSerializer(serializers.ModelSerializer):
     model = Question
     fields = ['text', 'id']
 
+class AnswerSerializer(serializers.ModelSerializer):
+
+  class Meta:
+    model = Answer
+    fields = ['text', 'question', 'form']
 
 class FormTemplateSerializer(serializers.ModelSerializer):
   questions = QuestionSerializer(many=True, read_only=True)
 
   class Meta:
     model = FormTemplate
-    fields = ['name', 'questions', 'id']
+    fields = ['name', 'questions', 'id', 'description', 'image']
 
 
 class FormWithAnswerSerializer(serializers.ModelSerializer):
   form_template = FormTemplateSerializer(many=False, read_only=True)
   user = UserSerializer(many=False, read_only=True)
   about_user = UserSerializer(many=False, read_only=True)
+  answer = AnswerSerializer(many=True, read_only=True)
   
   class Meta:
     model = FormWithAnswer
-    fields = ['form_template', 'about_user', 'user', 'form_template_id', 'about_user_id', 'user_id', 'id']
+    fields = ['form_template', 'about_user', 'user', 'form_template_id', 'about_user_id', 'user_id', 'id', 'answer']
 
     extra_kwargs = {
       'form_template_id': {'source': 'form_template', 'write_only': True },

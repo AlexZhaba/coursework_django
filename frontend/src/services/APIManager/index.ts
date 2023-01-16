@@ -1,45 +1,57 @@
-import { userLoginMocks } from './../mocks/mocks';
-import { formTemplatesMocks } from '../mocks/mocks';
 import { APIURL } from "./config";
+
+interface RequestOptions {
+  url: string;
+  method: 'GET' | 'POST';
+  body?: object;
+  withPagination?: boolean;
+}
 class APIManager {
   #baseUrl: string;
-
-  private mocks = {
-    'get:forms/template': formTemplatesMocks,
-    'post:users': userLoginMocks,
-  };
+  #token: null | string = null;
 
   constructor(baseUrl: string) {
     this.#baseUrl = APIURL;
   }
 
-  async get(endpoint: string) {
-    for (const [url, answer] of Object.entries(this.mocks)) {
-      if (`get:${endpoint}` !== url) continue;
-      await new Promise(resolve => setTimeout(resolve, 1e3));
-      return answer;
-    }
+  async #makeRequest(options: RequestOptions) {
+    const response = await fetch(options.url, {
+      method: options.method,
+      ...(options.body ? { body: JSON.stringify(options.body) } : {}),
+      headers: {
+        'Content-Type': 'application/json',
+        ...(this.#token ? { Authorization: `Token ${this.#token}` } : {})
+      }
+    });
 
+    const answer = await response.json();
 
-    const response = await fetch(`${this.#baseUrl}${endpoint}`);
-    const result = await response.json();
-    return result;
+    if (options.withPagination) return answer.results;
+    return answer;
   }
 
-  async post(endpoint: string, body: unknown) {
-    for (const [url, answer] of Object.entries(this.mocks)) {
-      if (`post:${endpoint}` !== url) continue;
-      await new Promise(resolve => setTimeout(resolve, 1e3));
-      return answer;
-    }
-
-
-    const response = await fetch(`${this.#baseUrl}${endpoint}`, {
-      method: "POST",
-      body: JSON.stringify(body),
+  async get(endpoint: string, withPagination?: boolean) {
+    console.log(`${this.#baseUrl}${endpoint}`);
+    const results = await this.#makeRequest({
+      url: `${this.#baseUrl}${endpoint}`,
+      method: 'GET',
+      withPagination,
     });
-    const result = await response.json();
-    return result;
+
+    return results;
+  }
+
+  async post(endpoint: string, body?: object) {
+    const results = await this.#makeRequest({
+      url: `${this.#baseUrl}${endpoint}`,
+      method: "POST",
+      body,
+    });
+    return results;
+  }
+
+  updateToken(token: string) {
+    this.#token = token;
   }
 }
 

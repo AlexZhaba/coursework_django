@@ -6,11 +6,7 @@ import useAPI from "../../hooks/useApi";
 import { FormWithAnswers, User } from "../../types";
 import { TextArea } from "../../share-style";
 
-interface Props {
-  activeUser: User;
-}
-
-const FormPage: React.FC<Props> = ({ activeUser }) => {
+const FormPage: React.FC = () => {
   const { formId } = useParams()
   const { data } = useAPI<FormWithAnswers>("get", `forms?id=${formId}`, []);
   console.log(data);

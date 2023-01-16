@@ -1,3 +1,4 @@
+from email.policy import default
 from django.db import models
 
 # Create your models here.
@@ -11,6 +12,12 @@ class Question(models.Model):
 
 class FormTemplate(models.Model):
   name = models.CharField(max_length=100, default='')
+  description = models.TextField(default='')
+  image = models.ImageField(upload_to ='uploads/', default='')
+  rating = models.IntegerField(
+    choices=[(5, 5), (4, 4), (3, 3), (2, 2), (1, 1), (0, 0)],
+    default=5
+  )
   questions = models.ManyToManyField(Question)
 
   def __str__(self):
@@ -27,7 +34,7 @@ class FormWithAnswer(models.Model):
 
 
 class Answer(models.Model):
-  form = models.ForeignKey("FormWithAnswer", on_delete=models.CASCADE)
+  form = models.ForeignKey("FormWithAnswer", on_delete=models.CASCADE, related_name='answer')
   question = models.ForeignKey("Question", on_delete=models.CASCADE)
   text = models.CharField(max_length=1000)
 

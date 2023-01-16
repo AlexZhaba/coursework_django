@@ -10,7 +10,7 @@ class QuestionsInline(admin.TabularInline):
 
 class FormTemplateAdmin(admin.ModelAdmin):
   fieldsets = [
-      (None, {'fields': ['name']}),
+      (None, {'fields': ['name', 'image', 'description', 'rating']}),
   ]
   inlines = [QuestionsInline]
   search_fields = ['name']

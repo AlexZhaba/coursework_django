@@ -21,7 +21,7 @@ const ProfileUserIdPage: React.FC = () => {
   )
 
   return (
-    <ProfilePage activeUser={data} />
+    <ProfilePage />
   )
 };
 

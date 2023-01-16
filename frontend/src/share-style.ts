@@ -81,11 +81,30 @@ export const Button = styled.button<ButtonProps>`
       cursor: not-allowed;
       font-size: 40px;
       border-radius: 5px;
-      
+    }
+
+    &::after {
+      z-index: 2;
+      content: '';
+      position: absolute;
       display: flex;
       align-items: center;
       justify-content: center;
       line-height: 5px;
+      content: '';
+      width: 20px;
+      height: 20px;
+      animation: loading 1s infinite linear;
+      border: 2px solid #404040;
+      border-top-color: var(--primary-color);
+      border-radius: 50%;
+      cursor: not-allowed;
+    }
+      @keyframes loading{
+        to{
+          transform: rotate(2turn);
+        }
+      }
     }
   `}
 `;

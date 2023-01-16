@@ -9,10 +9,6 @@ import { Button } from "../../share-style";
 import { Form, StorageUser, User } from "../../types";
 import { TextArea } from "../../share-style";
 
-interface Props {
-  activeUser: User;
-}
-
 interface FormData {
   about: string | null;
   user_id: string | null,
@@ -30,7 +26,7 @@ type DataFromFormProps = [
   FormData | null,
 ]
 
-const FormTemplatePage: React.FC<Props> = ({ activeUser }) => {
+const FormTemplatePage: React.FC = () => {
   const { templateId } = useParams()
   const [searchParams] = useSearchParams();
   const navigate = useNavigate();

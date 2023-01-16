@@ -26,11 +26,8 @@ import { Description } from "../ProfilePage/style";
 import { useSelector } from "react-redux";
 import { RootState, useAppDispatch } from "../../redux/store/store";
 import { fetchTemplates, setPage, setSortType, setSearch } from "../../redux/slices/formSlice";
-interface Props {
-  activeUser: User
-}
 
-const MainPage: React.FC<Props> = ({ activeUser }) => {
+const MainPage: React.FC = () => {
   const dispatch = useAppDispatch();
   const {
     isTemplatesLoading,
@@ -41,13 +38,13 @@ const MainPage: React.FC<Props> = ({ activeUser }) => {
     search,
   } = useSelector((state: RootState) => state.form);
 
-  const usersInDivision = useAPI<User[]>("get", `users?subdivision_id=${activeUser.subdivision_id}`, [])
+  const usersInDivision = useAPI<User[]>("get", `users`, [])
   const [selectedTemplate, setSelectedTemplate] = useState<null | Form>(null);
 
   const [isOpen, setIsOpen] = useState(false);
 
   useEffect(() => {
-    if (templates) return 
+    if (templates) return ;
     dispatch(fetchTemplates(false))
   }, [dispatch, templates]);
 
@@ -70,6 +67,7 @@ const MainPage: React.FC<Props> = ({ activeUser }) => {
           Обновить
         </UpdateButton>
       </Header>
+      <p>Поясняющий текст</p>
       <SearchBar>
         <SearchTitle>
           <span>Поиск</span>

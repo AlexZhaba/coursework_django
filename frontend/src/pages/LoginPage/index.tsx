@@ -8,11 +8,7 @@ import { FormWrapper, Label, Title, Wrapper, InputContainer } from './style';
 import { useSelector } from "react-redux";
 import { Navigate, useNavigate } from "react-router";
 
-interface LoginPageProps {
-  setActiveUser: Function;
-}
-
-export const LoginPage: React.FC<LoginPageProps> = ({ setActiveUser }) => {
+export const LoginPage: React.FC = () => {
   const usernameId = useId();
   const passwordId = useId();
 
@@ -20,20 +16,20 @@ export const LoginPage: React.FC<LoginPageProps> = ({ setActiveUser }) => {
   const dispatch = useAppDispatch();
 
   const handleOnSubmit = useCallback((event: React.FormEvent<HTMLFormElement>) => {
+    console.log('event', event);
     event.preventDefault();
 
-    const { value: login } = document.getElementById(usernameId) as HTMLInputElement;
+    const { value: username } = document.getElementById(usernameId) as HTMLInputElement;
     const { value: password } = document.getElementById(passwordId) as HTMLInputElement;
 
     dispatch(userLogin({
-      login,
+      username,
       password,
     }))
 
   }, [dispatch, passwordId, usernameId]);
 
   if (activeUser) {
-    setActiveUser(activeUser);
       return (
       <Navigate to={'/forms'} />
     )

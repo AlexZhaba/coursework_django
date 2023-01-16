@@ -18,7 +18,7 @@ const useAPI = <ResponseAPI, Deps extends unknown[] = []>(
     if (depsCondition && !depsCondition(deps)) return;
 
     setIsLoading(true);
-    APIManager[method](endpoint, requestBody)
+    APIManager[method](endpoint, requestBody as unknown as undefined)
       .then(data => setData(data))
       .catch(error => setError(error))
       .finally(() => setIsLoading(false));

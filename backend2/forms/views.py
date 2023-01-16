@@ -6,12 +6,13 @@ from rest_framework.decorators import action
 from rest_framework.response import Response
 
 from users.serializers import UserSerializer
-from rest_framework import mixins
+from rest_framework import mixins, filters, generics
 
 from .serializers import AnswerSerializer, FormTemplateSerializer, FormWithAnswerSerializer
 from .models import Answer, FormTemplate, FormWithAnswer, Question
 # Create your views here.
 
+# class FormTemplatesViewSet(generics.ListAPIView):
 class FormTemplatesViewSet(viewsets.ModelViewSet):
     """
     API endpoint that allows users to be viewed or edited.
@@ -21,15 +22,21 @@ class FormTemplatesViewSet(viewsets.ModelViewSet):
     authentication_classes = [TokenAuthentication]
     permission_classes = [IsAuthenticated]
 
+    filter_backends = [filters.SearchFilter]
+    search_fields = ['name']
+    page_size = 10
+
 
 class FormWithAnswersViewSet(viewsets.ModelViewSet):
     """
     API endpoint that allows users to be viewed or edited.
     """
-    queryset = FormWithAnswer.objects.all()
     serializer_class = FormWithAnswerSerializer
     authentication_classes = [TokenAuthentication]
     permission_classes = [IsAuthenticated]
+
+    def get_queryset(self):
+      return FormWithAnswer.objects.all().filter(user=self.request.user)
 
     @action(detail=False, methods=['POST'])
     def full_create(self, request, *args, **kwargs):
@@ -40,7 +47,6 @@ class FormWithAnswersViewSet(viewsets.ModelViewSet):
       
       # next 20 lines should be fixed but im tired
       serializers = [AnswerSerializer(data=answer).is_valid() for answer in request.data.get('answers')]
-      print('seri', serializers)
 
       isIncorrect = len(list(filter(lambda result: result == False, serializers)))
 

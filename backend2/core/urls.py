@@ -16,14 +16,17 @@ Including another URLconf
 from django.urls import include, path
 from django.contrib import admin
 from rest_framework import routers
+from django.conf.urls.static import static
+from django.conf import settings
+
 from users import views as UsersViews
 from forms import views as FormsViews
 from rest_framework.authtoken import views as RestViews
 
 router = routers.DefaultRouter()
-router.register(r'users', UsersViews.UserViewSet)
-router.register(r'forms', FormsViews.FormTemplatesViewSet)
-router.register(r'form_templates', FormsViews.FormWithAnswersViewSet)
+router.register(r'users', UsersViews.UserViewSet, basename='User')
+router.register(r'templates', FormsViews.FormTemplatesViewSet)
+router.register(r'forms', FormsViews.FormWithAnswersViewSet, basename='FormWithAnswer')
 
 # Wire up our API using automatic URL routing.
 # Additionally, we include login URLs for the browsable API.
@@ -31,4 +34,4 @@ urlpatterns = [
     path('', include(router.urls)),
     path('api-token-auth/', RestViews.obtain_auth_token),
     path('admin/', admin.site.urls)
-]
+] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
