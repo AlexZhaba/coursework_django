@@ -5,7 +5,7 @@ class SubdivisionSerializer(serializers.HyperlinkedModelSerializer):
 
   class Meta:
     model = Subdivision
-    fields = ['name']
+    fields = ['name', 'id']
 
 
 class UserSerializer(serializers.HyperlinkedModelSerializer):

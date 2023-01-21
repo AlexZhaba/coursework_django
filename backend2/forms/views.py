@@ -4,6 +4,7 @@ from rest_framework.authentication import TokenAuthentication
 from rest_framework import viewsets, status
 from rest_framework.decorators import action
 from rest_framework.response import Response
+from django.db.models import Q
 
 from users.serializers import UserSerializer
 from rest_framework import mixins, filters, generics
@@ -26,6 +27,24 @@ class FormTemplatesViewSet(viewsets.ModelViewSet):
     search_fields = ['name']
     page_size = 10
 
+    @action(detail=True, methods=['GET'])
+    def deep_search(self, request, *args, **kwargs):
+      value = kwargs.get('pk')
+
+      if (not value):
+        return Response({
+          'error': 'incorrect format'
+        }, status=status.HTTP_400_BAD_REQUEST)
+
+      templates = FormTemplate.objects.filter(
+        Q(name__contains=value) | Q(description__contains=value)
+      )
+
+      serializer = FormTemplateSerializer(data=templates, many=True)
+      serializer.is_valid()
+
+      return Response(data=serializer.data, status=200)
+
 
 class FormWithAnswersViewSet(viewsets.ModelViewSet):
     """
@@ -43,7 +62,6 @@ class FormWithAnswersViewSet(viewsets.ModelViewSet):
       form = self.create(request, *args, **kwargs)
       
       form_instance = get_object_or_404(FormWithAnswer, pk=form.data.get('id'))
-
       
       # next 20 lines should be fixed but im tired
       serializers = [AnswerSerializer(data=answer).is_valid() for answer in request.data.get('answers')]
@@ -64,3 +82,4 @@ class FormWithAnswersViewSet(viewsets.ModelViewSet):
         answer_instance.save()
       
       return form
+

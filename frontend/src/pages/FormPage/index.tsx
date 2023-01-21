@@ -1,25 +1,42 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useParams } from "react-router";
 import CommonPage from "../../containers/CommonPage";
 import List from "../../containers/List";
-import useAPI from "../../hooks/useApi";
-import { FormWithAnswers, User } from "../../types";
+
 import { TextArea } from "../../share-style";
+import { RootState, useAppDispatch } from "../../redux/store/store";
+import { fetchForm } from "../../redux/slices/formSlice";
+import { useSelector } from "react-redux";
 
 const FormPage: React.FC = () => {
-  const { formId } = useParams()
-  const { data } = useAPI<FormWithAnswers>("get", `forms?id=${formId}`, []);
-  console.log(data);
+  const { formId } = useParams();
+  const dispatch = useAppDispatch();
+  const { activeForm } = useSelector((state: RootState) => state.form);
+
+  useEffect(() => {
+    dispatch(fetchForm(Number(formId)))
+  }, [dispatch, formId]);
+  // console.log(data);
+
   return (
     <CommonPage>
-      <h1>{data ? data.name : "Загрузка анкеты"}</h1>
-      {data && <span>Пройдено пользователем: <strong>{data.user.name}</strong></span>}
-      {data && <span>Анкетирование о пользователе: <strong>{data.about_user.name}</strong></span>}
+      <h1>{activeForm ? activeForm.form_template.name : "Загрузка анкеты"}</h1>
+      {activeForm?.user && <span>Пройдено пользователем: <strong>{activeForm.user.username}</strong></span>}
+      {activeForm?.about_user && <span>Анкетирование о пользователе: <strong>{activeForm?.about_user.username}</strong></span>}
       <List gap={10}>
-        {data && data.questions.map(question => (
+        {activeForm && activeForm.form_template.questions.map(question => (
           <List.Item key={question.id} data={question}>
             <p>{question.text}</p>
-            <TextArea name="answers" id={`${question.id}`} className="answers" cols={30} rows={10} readOnly value={question.answer.text}></TextArea>
+            <TextArea
+              name="answers"
+              id={`${question.id}`}
+              className="answers"
+              cols={30}
+              rows={10} readOnly
+              value={activeForm.answer.find(answer => answer.question === question.id)?.text || ''}
+            >
+              
+              </TextArea>
           </List.Item>
         ))}
       </List>

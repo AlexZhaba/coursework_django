@@ -1,5 +1,7 @@
 import React from "react";
+import { useSelector } from "react-redux";
 import { Link, useLocation } from "react-router-dom";
+import { RootState } from "../../redux/store/store";
 import LocalStorage from "../../services/LocalStorage";
 import { User } from "../../types";
 import { Wrapper, Header, Footer, Main, RightHeader } from "./style";
@@ -8,9 +10,13 @@ interface Props {
   children: React.ReactNode
 }
 
+/* 
+  create read update delete
+*/
+
 const CommonPage: React.FC<Props> = ({ children }) => {
   const location = useLocation();
-  console.log(location);
+  const { activeUser } = useSelector((state: RootState) => state.user);
   return (
     <Wrapper>
       <Header>
@@ -20,11 +26,8 @@ const CommonPage: React.FC<Props> = ({ children }) => {
             <Link to="/main">
               Анкеты
             </Link>
-            <Link to="/userssubdivision">
-              Список подразделения
-            </Link>
             <Link to="/profile">
-              Мой профиль({LocalStorage.get<User>('activeUser')?.name})
+              Мой профиль({activeUser?.username})
             </Link>
           </RightHeader>
         )}

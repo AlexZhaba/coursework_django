@@ -41,13 +41,13 @@ const App: React.FC = () => {
         <Route path="/main" element={<MainPage />} />
       </Route>
 
-      {/* <Route path="/formTemplate/:templateId" element={<ProtectedRoute onUnAuthPath="/sign" />}>
+      <Route path="/formTemplate/:templateId" element={<ProtectedRoute onUnAuthPath="/sign" />}>
         <Route path="/formTemplate/:templateId" element={<FormTemplatePage />} />
-      </Route> */}
+      </Route>
 
-      {/* <Route path="/form/:formId" element={<ProtectedRoute onUnAuthPath="/sign" />}>
+      <Route path="/form/:formId" element={<ProtectedRoute onUnAuthPath="/sign" />}>
         <Route path="/form/:formId" element={<FormPage />} />
-      </Route> */}
+      </Route>
       <Route path={"/sign"} element={<LoginPage />} />
       <Route path="*" element={<Navigate to="/main"/>} />
     </Routes>

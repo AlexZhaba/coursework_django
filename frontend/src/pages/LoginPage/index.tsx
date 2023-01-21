@@ -30,6 +30,7 @@ export const LoginPage: React.FC = () => {
   }, [dispatch, passwordId, usernameId]);
 
   if (activeUser) {
+    console.log('activeUser', activeUser);
       return (
       <Navigate to={'/forms'} />
     )
@@ -46,7 +47,7 @@ export const LoginPage: React.FC = () => {
           </InputContainer>
           <InputContainer>
             <Label htmlFor={passwordId}>Пароль</Label>
-            <Input id={passwordId} type="password" required minLength={6} />
+            <Input id={passwordId} type="password" />
           </InputContainer>
           <Button isLoading={isLoading}>Войти</Button>
         </FormWrapper>

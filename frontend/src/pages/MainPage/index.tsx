@@ -26,6 +26,8 @@ import { Description } from "../ProfilePage/style";
 import { useSelector } from "react-redux";
 import { RootState, useAppDispatch } from "../../redux/store/store";
 import { fetchTemplates, setPage, setSortType, setSearch } from "../../redux/slices/formSlice";
+import { getUsersFromSubdivision } from "../../redux/slices/userSlice";
+import { act } from "react-dom/test-utils";
 
 const MainPage: React.FC = () => {
   const dispatch = useAppDispatch();
@@ -38,15 +40,21 @@ const MainPage: React.FC = () => {
     search,
   } = useSelector((state: RootState) => state.form);
 
-  const usersInDivision = useAPI<User[]>("get", `users`, [])
+  const { usersInDivision, activeUser } = useSelector((state: RootState) => state.user);
   const [selectedTemplate, setSelectedTemplate] = useState<null | Form>(null);
 
   const [isOpen, setIsOpen] = useState(false);
 
   useEffect(() => {
     if (templates) return ;
-    dispatch(fetchTemplates(false))
-  }, [dispatch, templates]);
+    dispatch(fetchTemplates(false));
+    console.log('activeUser', activeUser);
+    const { subdivision } = activeUser ?? { subdivision: null };
+    if (subdivision) {
+      console.log('subdivision.id', subdivision.id);
+      dispatch(getUsersFromSubdivision(subdivision.id))
+    }
+  }, [activeUser, dispatch, templates]);
 
   const handleClickForm = useCallback((form: Form) => {
     console.log(form);
@@ -54,7 +62,7 @@ const MainPage: React.FC = () => {
     setSelectedTemplate(form);
   }, []);
 
-  console.log('sortType', sortType);
+  console.log('usersInDivision', usersInDivision);
 
   return (
     <CommonPage>
@@ -128,11 +136,11 @@ const MainPage: React.FC = () => {
       <Modal isOpen={isOpen} onClose={() => setIsOpen(false)}>
         <h2 style={{textAlign: "center"}}>Выбрать пользователя</h2>
         <List gap={10} overflowtype="scroll">
-          {usersInDivision.data && usersInDivision.data.map(user => (
+          {usersInDivision && usersInDivision.map(user => (
             <List.Item key={user.id} data={user}>
               <Link to={`/formTemplate/${selectedTemplate?.id}?about=${user.id}`}>
                 <UserButton>
-                  {user.name}
+                  {user.username}
                 </UserButton>
               </Link>
             </List.Item>

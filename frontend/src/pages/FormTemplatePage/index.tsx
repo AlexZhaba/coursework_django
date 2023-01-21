@@ -8,14 +8,18 @@ import LocalStorage from "../../services/LocalStorage";
 import { Button } from "../../share-style";
 import { Form, StorageUser, User } from "../../types";
 import { TextArea } from "../../share-style";
+import { useSelector } from "react-redux";
+import { RootState, useAppDispatch } from "../../redux/store/store";
+import { fetchTemplateWithId, saveForm } from "../../redux/slices/formSlice";
 
-interface FormData {
-  about: string | null;
-  user_id: string | null,
-  form_template_id: string,
+export interface FormData {
+  about_user_id: number | null;
+  user_id: number | null,
+  form_template_id: number,
   answers: {
-    [K: string]: string
-  }
+    question_id: number;
+    text: string;
+  }[];
 };
 
 interface PostResponseAPI {
@@ -30,41 +34,72 @@ const FormTemplatePage: React.FC = () => {
   const { templateId } = useParams()
   const [searchParams] = useSearchParams();
   const navigate = useNavigate();
-  const [dataFromForm, setDataFromForm] = useState<FormData | null>(null);
+  const dispatch = useAppDispatch();
+  // const [dataFromForm, setDataFromForm] = useState<FormData | null>(null);
   const formRef = useRef<HTMLFormElement | null>(null);
-  const { isLoading, data } = useAPI<Form>("get", `forms/template?template_id=${templateId}`, []);
+  // const { isLoading, data } = useAPI<Form>("get", `forms/template?template_id=${templateId}`, []);
+  const { activeTemplate, isTemplatesLoading, activeForm } = useSelector((state: RootState) => state.form);
+  const { activeUser } = useSelector((state: RootState) => state.user);
 
-  const sendForm = useAPI<PostResponseAPI, DataFromFormProps>("post", `forms/`, [dataFromForm], {}, (deps) => !!deps[0]);
+  // const sendForm = useAPI<PostResponseAPI, DataFromFormProps>("post", `forms/`, [dataFromForm], {}, (deps) => !!deps[0]);
 
   useEffect(() => {
-    if (!sendForm.data) return;
-    navigate(`/form/${sendForm.data.form_id}`);
-  }, [sendForm.data]);
+    console.log('activeForm', activeForm);
+    if (!activeForm) return;
+    navigate(`/form/${activeForm.id}`);
+  }, [navigate, activeForm, isTemplatesLoading]);
+
+  useEffect(() => {
+    if (templateId) dispatch(fetchTemplateWithId(Number(templateId)));
+  }, [dispatch, templateId]);
 
   const onFormSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     if (!formRef.current) return;
+    /*
+      {
+        "form_template_id": 2,
+        "user_id": 1,
+        "about_user_id": 2,
+        "answers": [
+            {
+                "text": "ANSWER_1",
+                "question_id": "1"
+            },
+            {
+                "text": "ANSWER_1",
+                "question_id": "1"
+            }
+        ]
+    }
+    */
     const answers = [...document.getElementsByClassName("answers")] as HTMLTextAreaElement[];
     const formData: FormData = {
-      about: searchParams.get("about"),
-      user_id: String(LocalStorage.get<StorageUser>("activeUser")?.id),
-      form_template_id: templateId as string,
-      answers: {}
+      about_user_id: Number(searchParams.get("about")),
+      user_id: Number(activeUser?.id),
+      form_template_id: Number(templateId),
+      answers: answers.map(el => ({
+        question_id: Number(el.id),
+        text: el.value,
+      })),
     };
-    answers.forEach((answer) => {
-      formData.answers[answer.id] = answer.value
-    });
+    // answers.forEach((answer) => {
+    //   formData.answers[answer.id] = answer.value
+    // });
     // console.log(formData);
-    sendForm.setRequestBody(formData); 
-    setDataFromForm(formData);
+    // sendForm.setRequestBody(formData); 
+    // setDataFromForm(formData);
+    dispatch(saveForm(formData));
   }
+
+  console.log('activeTemplate', activeTemplate);
 
   return (
     <CommonPage>
-      <h1>{data ? data.name : "Загрузка анкеты"}</h1>
+      <h1>{activeTemplate ? activeTemplate.name : "Загрузка анкеты"}</h1>
       <form method="POST" onSubmit={onFormSubmit} ref={formRef}>
         <List gap={10}>
-          {data && data.questions.map(question => (
+          {activeTemplate && activeTemplate.questions.map(question => (
             <List.Item key={question.id} data={question}>
               <p>{question.text}</p>
               <TextArea name="answers" id={`${question.id}`} className="answers" cols={30} rows={10}></TextArea>

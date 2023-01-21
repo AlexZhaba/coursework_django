@@ -11,6 +11,7 @@ import ProfileReflection from "../../components/ProfileReflection";
 import { RootState, useAppDispatch } from "../../redux/store/store";
 import { useSelector } from "react-redux";
 import { fetchForms } from "../../redux/slices/formSlice";
+import { logout } from "../../redux/slices/userSlice";
 
 const ProfilePage: React.FC = () => {
   const navigate = useNavigate();
@@ -22,7 +23,9 @@ const ProfilePage: React.FC = () => {
 
   const onExit = () => {
     LocalStorage.set("activeUser", null);
+    LocalStorage.set('token', null);
     // if (setActiveUser) setActiveUser(null);
+    dispatch(logout());
     navigate("/users");
   };
 
